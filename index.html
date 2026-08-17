@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tic-Tac-Toe</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --fg: #1a1a1a;
+    --muted: #3d3d3d;
+    --cell-bg: #ffffff;
+    --cell-border: #4d4d4d;
+    --cell-border-hover: #1a1a1a;
+    --x-color: #0049b7;
+    --o-color: #b3001b;
+    --focus: #0049b7;
+    --win-bg: #fff3b0;
+    --win-border: #7a5b00;
+    --btn-bg: #1a1a1a;
+    --btn-fg: #ffffff;
+    --btn-bg-hover: #333333;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+
+  body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1.5rem 1rem 3rem;
+  }
+
+  h1 {
+    font-size: 1.75rem;
+    margin: 0 0 0.75rem;
+  }
+
+  main {
+    width: 100%;
+    max-width: 26rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  #instructions {
+    font-size: 1rem;
+    color: var(--muted);
+    text-align: center;
+    margin: 0 0 1rem;
+    max-width: 32rem;
+  }
+
+  .status {
+    font-size: 1.15rem;
+    font-weight: 600;
+    min-height: 1.75rem;
+    margin: 0 0 1rem;
+    text-align: center;
+  }
+
+  .board {
+    display: grid;
+    grid-template-columns: repeat(3, 5rem);
+    grid-template-rows: repeat(3, 5rem);
+    gap: 0.4rem;
+    margin: 0 0 1.5rem;
+  }
+
+  .cell {
+    width: 5rem;
+    height: 5rem;
+    font-size: 2.25rem;
+    font-weight: 700;
+    line-height: 1;
+    background: var(--cell-bg);
+    border: 2px solid var(--cell-border);
+    border-radius: 0.5rem;
+    color: var(--fg);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+  }
+
+  .cell:hover:not(:disabled) {
+    border-color: var(--cell-border-hover);
+  }
+
+  .cell:disabled {
+    cursor: default;
+  }
+
+  .cell[data-mark="X"] {
+    color: var(--x-color);
+  }
+
+  .cell[data-mark="O"] {
+    color: var(--o-color);
+  }
+
+  .cell.win {
+    background: var(--win-bg);
+    border-color: var(--win-border);
+    border-width: 3px;
+  }
+
+  .cell:focus-visible,
+  .reset-btn:focus-visible {
+    outline: 3px solid var(--focus);
+    outline-offset: 2px;
+  }
+
+  /* Fallback for browsers without :focus-visible support */
+  .cell:focus,
+  .reset-btn:focus {
+    outline: 3px solid var(--focus);
+    outline-offset: 2px;
+  }
+
+  .reset-btn {
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 0.6rem 1.25rem;
+    background: var(--btn-bg);
+    color: var(--btn-fg);
+    border: 2px solid var(--btn-bg);
+    border-radius: 0.5rem;
+    cursor: pointer;
+  }
+
+  .reset-btn:hover {
+    background: var(--btn-bg-hover);
+    border-color: var(--btn-bg-hover);
+  }
+
+  footer {
+    margin-top: 2rem;
+    max-width: 26rem;
+  }
+
+  .note {
+    font-size: 0.85rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+  }
+
+  @media (max-width: 360px) {
+    .board {
+      grid-template-columns: repeat(3, 4.2rem);
+      grid-template-rows: repeat(3, 4.2rem);
+    }
+    .cell { width: 4.2rem; height: 4.2rem; font-size: 1.9rem; }
+  }
+</style>
+</head>
+<body>
+  <h1>Tic-Tac-Toe</h1>
+  <main>
+    <p id="instructions">
+      A two-player game. Player X goes first, then players alternate.
+      Use Tab or the Arrow keys to move between squares, and press Enter
+      or Space to place your mark. The first player to line up three
+      marks in a row, column, or diagonal wins.
+    </p>
+    <div id="status" class="status" role="status" aria-live="polite">Player X&rsquo;s turn.</div>
+    <div id="board" class="board" aria-label="Tic-tac-toe board, 3 by 3 grid">
+      <button type="button" class="cell" aria-label="Row 1, Column 1, empty"></button>
+      <button type="button" class="cell" aria-label="Row 1, Column 2, empty"></button>
+      <button type="button" class="cell" aria-label="Row 1, Column 3, empty"></button>
+      <button type="button" class="cell" aria-label="Row 2, Column 1, empty"></button>
+      <button type="button" class="cell" aria-label="Row 2, Column 2, empty"></button>
+      <button type="button" class="cell" aria-label="Row 2, Column 3, empty"></button>
+      <button type="button" class="cell" aria-label="Row 3, Column 1, empty"></button>
+      <button type="button" class="cell" aria-label="Row 3, Column 2, empty"></button>
+      <button type="button" class="cell" aria-label="Row 3, Column 3, empty"></button>
+    </div>
+    <button type="button" id="reset" class="reset-btn">New Game</button>
+  </main>
+  <footer>
+    <p class="note">Keyboard accessible &middot; screen-reader announcements &middot; WCAG 2 AA color contrast.</p>
+  </footer>
+<script>
+(function(){"use strict";var _w=[7,56,448,73,146,292,273,84],_m=[0,0],_t=0,_o=false,_n=0,_q=Array.prototype.slice.call(document.querySelectorAll(".cell")),_g=document.getElementById("board"),_s=document.getElementById("status"),_r=document.getElementById("reset");function _a(i){return(_m[0]|_m[1])>>i&1}function _b(k){for(var j=0;j<8;j++){if((k&_w[j])===_w[j])return _w[j]}return 0}function _c(r,c,v){return"Row "+(r+1)+", Column "+(c+1)+", "+(v?"marked "+v:"empty")}function _d(){_q.forEach(function(e,i){var r=i/3|0,c=i%3,x=_m[0]>>i&1,y=_m[1]>>i&1,v=x?"X":y?"O":"";e.textContent=v;if(v){e.setAttribute("data-mark",v)}else{e.removeAttribute("data-mark")}e.setAttribute("aria-label",_c(r,c,v));e.disabled=!!v||_o;e.classList.remove("win")})}function _e(p,wm){if(wm){_q.forEach(function(e,i){if(wm>>i&1)e.classList.add("win")});_s.textContent="Player "+(p?"O":"X")+" wins! Press New Game to play again.";_r.focus();return}if(_n===9){_s.textContent="It’s a draw! Press New Game to play again.";_r.focus();return}_t=1-_t;_s.textContent="Player "+(_t?"O":"X")+"’s turn."}function _f(i){if(_o||_a(i))return;_m[_t]|=1<<i;_n++;var p=_t,wm=_b(_m[p]);if(wm||_n===9)_o=true;_d();_e(p,wm)}_q.forEach(function(e,i){e.addEventListener("click",function(){_f(i)})});_g.addEventListener("keydown",function(ev){var idx=_q.indexOf(document.activeElement);if(idx<0)return;var r=idx/3|0,c=idx%3,ni=-1;if(ev.key==="ArrowRight")ni=r*3+(c+1)%3;else if(ev.key==="ArrowLeft")ni=r*3+(c+2)%3;else if(ev.key==="ArrowDown")ni=(r+1)%3*3+c;else if(ev.key==="ArrowUp")ni=(r+2)%3*3+c;if(ni>=0){ev.preventDefault();_q[ni].focus()}});_r.addEventListener("click",function(){_m=[0,0];_t=0;_o=false;_n=0;_d();_s.textContent="New game started. Player X’s turn.";_q[0].focus()});_d()})();
+</script>
+</body>
+</html>
