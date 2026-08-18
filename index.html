@@ -80,13 +80,13 @@
   .cell {
     width: 5rem;
     height: 5rem;
-    font-size: 2.25rem;
-    font-weight: 700;
+    font-size: 1.5rem;
+    font-weight: 400;
     line-height: 1;
     background: var(--cell-bg);
     border: 2px solid var(--cell-border);
     border-radius: 0.5rem;
-    color: var(--fg);
+    color: var(--muted);
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -100,6 +100,11 @@
 
   .cell:disabled {
     cursor: default;
+  }
+
+  .cell[data-mark] {
+    font-size: 2.25rem;
+    font-weight: 700;
   }
 
   .cell[data-mark="X"] {
@@ -173,22 +178,24 @@
   <h1>Tic-Tac-Toe</h1>
   <main>
     <p id="instructions">
-      A two-player game. Player X goes first, then players alternate.
-      Use Tab or the Arrow keys to move between squares, and press Enter
-      or Space to place your mark. The first player to line up three
+      A two-player game. Squares are numbered 1 through 9, left to right,
+      top to bottom. Player X goes first, then players alternate.
+      Use Tab or the Arrow keys to move between squares and press Enter
+      or Space to place your mark, or press a number key 1 through 9 to
+      select that square directly. The first player to line up three
       marks in a row, column, or diagonal wins.
     </p>
     <div id="status" class="status" role="status" aria-live="polite">Player X&rsquo;s turn.</div>
     <div id="board" class="board" aria-label="Tic-tac-toe board, 3 by 3 grid">
-      <button type="button" class="cell" aria-label="Row 1, Column 1, empty"></button>
-      <button type="button" class="cell" aria-label="Row 1, Column 2, empty"></button>
-      <button type="button" class="cell" aria-label="Row 1, Column 3, empty"></button>
-      <button type="button" class="cell" aria-label="Row 2, Column 1, empty"></button>
-      <button type="button" class="cell" aria-label="Row 2, Column 2, empty"></button>
-      <button type="button" class="cell" aria-label="Row 2, Column 3, empty"></button>
-      <button type="button" class="cell" aria-label="Row 3, Column 1, empty"></button>
-      <button type="button" class="cell" aria-label="Row 3, Column 2, empty"></button>
-      <button type="button" class="cell" aria-label="Row 3, Column 3, empty"></button>
+      <button type="button" class="cell" aria-label="Square 1, empty">1</button>
+      <button type="button" class="cell" aria-label="Square 2, empty">2</button>
+      <button type="button" class="cell" aria-label="Square 3, empty">3</button>
+      <button type="button" class="cell" aria-label="Square 4, empty">4</button>
+      <button type="button" class="cell" aria-label="Square 5, empty">5</button>
+      <button type="button" class="cell" aria-label="Square 6, empty">6</button>
+      <button type="button" class="cell" aria-label="Square 7, empty">7</button>
+      <button type="button" class="cell" aria-label="Square 8, empty">8</button>
+      <button type="button" class="cell" aria-label="Square 9, empty">9</button>
     </div>
     <button type="button" id="reset" class="reset-btn">New Game</button>
   </main>
@@ -196,7 +203,7 @@
     <p class="note">Keyboard accessible &middot; screen-reader announcements &middot; WCAG 2 AA color contrast.</p>
   </footer>
 <script>
-(function(){"use strict";var _w=[7,56,448,73,146,292,273,84],_m=[0,0],_t=0,_o=false,_n=0,_q=Array.prototype.slice.call(document.querySelectorAll(".cell")),_g=document.getElementById("board"),_s=document.getElementById("status"),_r=document.getElementById("reset");function _a(i){return(_m[0]|_m[1])>>i&1}function _b(k){for(var j=0;j<8;j++){if((k&_w[j])===_w[j])return _w[j]}return 0}function _c(r,c,v){return"Row "+(r+1)+", Column "+(c+1)+", "+(v?"marked "+v:"empty")}function _d(){_q.forEach(function(e,i){var r=i/3|0,c=i%3,x=_m[0]>>i&1,y=_m[1]>>i&1,v=x?"X":y?"O":"";e.textContent=v;if(v){e.setAttribute("data-mark",v)}else{e.removeAttribute("data-mark")}e.setAttribute("aria-label",_c(r,c,v));e.disabled=!!v||_o;e.classList.remove("win")})}function _e(p,wm){if(wm){_q.forEach(function(e,i){if(wm>>i&1)e.classList.add("win")});_s.textContent="Player "+(p?"O":"X")+" wins! Press New Game to play again.";_r.focus();return}if(_n===9){_s.textContent="It’s a draw! Press New Game to play again.";_r.focus();return}_t=1-_t;_s.textContent="Player "+(_t?"O":"X")+"’s turn."}function _f(i){if(_o||_a(i))return;_m[_t]|=1<<i;_n++;var p=_t,wm=_b(_m[p]);if(wm||_n===9)_o=true;_d();_e(p,wm)}_q.forEach(function(e,i){e.addEventListener("click",function(){_f(i)})});_g.addEventListener("keydown",function(ev){var idx=_q.indexOf(document.activeElement);if(idx<0)return;var r=idx/3|0,c=idx%3,ni=-1;if(ev.key==="ArrowRight")ni=r*3+(c+1)%3;else if(ev.key==="ArrowLeft")ni=r*3+(c+2)%3;else if(ev.key==="ArrowDown")ni=(r+1)%3*3+c;else if(ev.key==="ArrowUp")ni=(r+2)%3*3+c;if(ni>=0){ev.preventDefault();_q[ni].focus()}});_r.addEventListener("click",function(){_m=[0,0];_t=0;_o=false;_n=0;_d();_s.textContent="New game started. Player X’s turn.";_q[0].focus()});_d()})();
+(function(){"use strict";var _w=[7,56,448,73,146,292,273,84],_m=[0,0],_t=0,_o=false,_n=0,_q=Array.prototype.slice.call(document.querySelectorAll(".cell")),_g=document.getElementById("board"),_s=document.getElementById("status"),_r=document.getElementById("reset");function _a(i){return(_m[0]|_m[1])>>i&1}function _b(k){for(var j=0;j<8;j++){if((k&_w[j])===_w[j])return _w[j]}return 0}function _c(i,v){return"Square "+(i+1)+", "+(v?"marked "+v:"empty")}function _d(){_q.forEach(function(e,i){var x=_m[0]>>i&1,y=_m[1]>>i&1,v=x?"X":y?"O":"";e.textContent=v||(i+1);if(v){e.setAttribute("data-mark",v)}else{e.removeAttribute("data-mark")}e.setAttribute("aria-label",_c(i,v));e.disabled=!!v||_o;e.classList.remove("win")})}function _e(p,wm){if(wm){_q.forEach(function(e,i){if(wm>>i&1)e.classList.add("win")});_s.textContent="Player "+(p?"O":"X")+" wins! Press New Game to play again.";_r.focus();return}if(_n===9){_s.textContent="It’s a draw! Press New Game to play again.";_r.focus();return}_t=1-_t;_s.textContent="Player "+(_t?"O":"X")+"’s turn."}function _f(i){if(_o||_a(i))return;_m[_t]|=1<<i;_n++;var p=_t,wm=_b(_m[p]);if(wm||_n===9)_o=true;_d();_e(p,wm)}_q.forEach(function(e,i){e.addEventListener("click",function(){_f(i)})});_g.addEventListener("keydown",function(ev){var idx=_q.indexOf(document.activeElement);if(idx<0)return;var r=idx/3|0,c=idx%3,ni=-1;if(ev.key==="ArrowRight")ni=r*3+(c+1)%3;else if(ev.key==="ArrowLeft")ni=r*3+(c+2)%3;else if(ev.key==="ArrowDown")ni=(r+1)%3*3+c;else if(ev.key==="ArrowUp")ni=(r+2)%3*3+c;if(ni>=0){ev.preventDefault();_q[ni].focus()}});_r.addEventListener("click",function(){_m=[0,0];_t=0;_o=false;_n=0;_d();_s.textContent="New game started. Player X’s turn.";_q[0].focus()});document.addEventListener("keydown",function(ev){var k=ev.key;if(k>="1"&&k<="9"){var i=+k-1;if(!_q[i].disabled){ev.preventDefault();_q[i].focus();_q[i].click()}}});_d()})();
 </script>
 </body>
 </html>
